@@ -33,5 +33,17 @@ router.post("/todo", (req, res, next)=>{
      }
 });
 
+//delete todo from database
+router.delete("/todo/:id", (req, res, next)=>{
+    db.todos.remove({_id: mongojs.ObjectId(req.params.id)}, (err, todo)=>{
+        if(err){
+            res.send(err);
+        }
+        res.json(todo);
+    });
+});
+
+
+
 
 module.exports = router;
