@@ -43,7 +43,34 @@ router.delete("/todo/:id", (req, res, next)=>{
     });
 });
 
-
+//update todo from database
+router.put("/todo/:id", function(req, res, next) {
+    var todo = req.body;
+    var updTodo = {};
+  
+    if (todo.title) {
+      updTodo.title = todo.title;
+    }
+  
+    if (!updTodo) {
+      res.status(400);
+      res.json({
+        error: "Bad Data"
+      });
+    } else {
+      db.todos.update(
+        { _id: mongojs.ObjectId(req.params.id) },
+        updTodo,
+        {},
+        function(err, todo) {
+          if (err) {
+            res.send(err);
+          }
+          res.json(todo);
+        }
+      );
+    }
+  });
 
 
 module.exports = router;
